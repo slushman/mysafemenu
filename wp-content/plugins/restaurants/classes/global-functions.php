@@ -2,7 +2,7 @@
 /**
  * Globally-accessible functions
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package		Restaurants

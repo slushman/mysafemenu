@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package 	Restaurants
@@ -168,6 +168,21 @@ class Restaurants {
 	 */
 	private function define_metabox_hooks() {
 
+		$metaboxes = array( 'Menufiles' );
+
+		foreach ( $metaboxes as $box ) {
+
+			$class = 'Restaurants_Metabox_' . $box;
+
+			$box = new $class();
+
+			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'add_metaboxes' );
+			$this->loader->action( 'save_post_restaurant', 			$box, 'validate_meta', 10, 2 );
+			$this->loader->action( 'edit_form_after_title', 		$box, 'promote_metaboxes', 10, 1 );
+			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'set_meta' );
+
+		}
+
 		$plugin_metaboxes = new Restaurants_Metaboxes();
 
 		$this->loader->action( 'add_meta_boxes_restaurant', $plugin_metaboxes, 'add_metaboxes' );
@@ -230,9 +245,7 @@ class Restaurants {
 		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_wrap_begin', 10, 2 );
 		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_link_begin', 15, 2 );
 
-		$this->loader->action( 'restaurants-loop-content', 			$plugin_templates, 'loop_content_image', 10, 2 );
 		$this->loader->action( 'restaurants-loop-content', 			$plugin_templates, 'loop_content_title', 15, 2 );
-		$this->loader->action( 'restaurants-loop-content', 			$plugin_templates, 'loop_content_subtitle', 20, 2 );
 
 		$this->loader->action( 'restaurants-after-loop-content', 	$plugin_templates, 'loop_content_link_end', 10, 2 );
 		$this->loader->action( 'restaurants-after-loop-content', 	$plugin_templates, 'loop_content_wrap_end', 90, 2 );

@@ -3,75 +3,58 @@
 /**
  * Provides the markup for a set of radios
  *
- * $atts:
- *	class
- *	description 	Description of the set for the legend tag
- * 	id
- * 	name
- * 	selections 		The individual items to create radios
- * 		label 		The text label of this item
- * 		value 		The value of this item
- *  value 			The saved value
- *  wrap-tag 		Optional tag name to wrap each radio in, ie: 'p', 'span', 'li', etc
+ * @link 		https://www.mysafemenu.com
+ * @since 		1.0.0
  *
- *
- * @link       https://www.slushman.com
- * @since      1.0.0
- *
- * @package    Restaurants
- * @subpackage Restaurants/classes/views
+ * @package 	Restaurants
+ * @subpackage 	Restaurants/classes/views
  */
+ $defaults['class'] 			= '';
+ $defaults['description'] 	= __( '', 'text-domain' );
+ $defaults['name'] 			= '';
+ $defaults['selections'] 	= array( 'label' => '', 'value' => '' );
+ $defaults['value'] 			= '';
+ $defaults['wrap-tag'] 		= '';
+ $atts 						= wp_parse_args( $atts, $defaults );
 
-?><fieldset role="radiogroup" class="wrap-radios"><?php
+ ?><fieldset class="wrap-radios" role="radiogroup" >
+ 	<legend class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></legend><?php
 
-if ( ! empty( $atts['description'] ) ) {
+ 	foreach ( $atts['selections'] as $selection ) {
 
-	?><legend class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></legend><?php
+ 		$label = ( is_array( $selection ) ? $selection['label'] : $selection );
+ 		$value = ( is_array( $selection ) ? $selection['value'] : sanitize_title( $selection ) );
 
-}
+ 		if ( ! empty( $atts['wrap-tag'] ) ) {
 
-foreach ( $atts['selections'] as $selection ) {
+ 			echo '<' . esc_attr( $atts['wrap-tag'] ) . '>';
 
-	if ( is_array( $selection ) ) {
+ 		}
 
-		$label = $selection['label'];
-		$value = $selection['value'];
 
-	} else {
 
-		$label = $selection;
-		$value = strtolower( $selection );
+ 		?><label class="<?php echo esc_attr( $atts['class'] ); ?>" for="<?php echo esc_attr( $value ); ?>">
+ 			<input <?php
 
-	}
+ 				checked( $value, $atts['value'], true );
 
-	if ( ! empty( $atts['wrap-tag'] ) ) {
+ 				?>id="<?php echo esc_attr( $value ); ?>"
+ 				name="<?php echo esc_attr( $atts['name'] ); ?>"
+ 				type="radio"
+ 				value="<?php echo esc_attr( $value ); ?>" />
+ 			<span class=""><?php
 
-		echo '<' . esc_attr( $atts['wrap-tag'] ) . '>';
+ 				echo wp_kses( $label, array( 'code' => array() ) );
 
-	}
+ 			?></span>
+ 		</label><?php
 
-	?><label for="<?php echo esc_attr( $atts['id'] ); ?>">
-		<input aria-role="radio"
-			<?php checked( $value, $atts['value'], true ); ?>
-			class="<?php echo esc_attr( $atts['class'] ); ?>"
-			id="<?php echo esc_attr( $atts['id'] ); ?>"
-			name="<?php echo esc_attr( $atts['name'] ); ?>"
-			type="radio"
-			value="<?php echo esc_attr( $value ); ?>" /> <?php
+ 		if ( ! empty( $atts['wrap-tag'] ) ) {
 
-			echo wp_kses( $label, array( 'code' => array() ) );
+ 			echo '</' . esc_attr( $atts['wrap-tag'] ) . '>';
 
-	?></label><?php
+ 		}
 
-	if ( ! empty( $atts['wrap-tag'] ) ) {
+ 	} // foreach
 
-		echo '</' . esc_attr( $atts['wrap-tag'] ) . '>';
-
-	}
-
-	unset( $label );
-	unset( $value );
-
-} // foreach
-
-?></fieldset>
+ ?></fieldset>

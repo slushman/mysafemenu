@@ -3,15 +3,18 @@
 /**
  * Provides the markup for any WP Editor field
  *
- * @link       https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since      1.0.0
  *
  * @package    Restaurants
  * @subpackage Restaurants/classes/views
  */
+ $defaults['description'] 	= '';
+ $defaults['id'] 			= '';
+ $defaults['settings'] 		= array();
+ $defaults['value'] 			= '';
+ $atts 						= wp_parse_args( $atts, $defaults );
 
-// wp_editor( $content, $editor_id, $settings = array() );
+ wp_editor( $atts['value'], $atts['id'], $atts['settings'] );
 
-wp_editor( $atts['value'], $atts['id'], $atts['settings'] );
-
-?><span class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></span>
+ ?><span class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></span>

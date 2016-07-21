@@ -3,7 +3,7 @@
 /**
  * Creates a draft post when a new restaurant is saved.
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  * @package 	Restaurants
  * @subpackage 	Restaurants/classes

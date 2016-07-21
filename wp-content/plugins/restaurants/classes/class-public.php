@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package 	Restaurants
@@ -111,7 +111,8 @@ class Restaurants_Public {
 		$defaults['taxonomyname'] 	= '';
 		$defaults['loop-template'] 	= RESTAURANTS_SLUG . '-loop';
 		$defaults['order'] 			= 'ASC';
-		$defaults['quantity'] 		= 100;
+		$defaults['orderby'] 		= 'title';
+		$defaults['quantity'] 		= 300;
 		$defaults['show'] 			= '';
 		$args						= shortcode_atts( $defaults, $atts, 'listrestaurants' );
 		$shared 					= new Restaurants_Shared( RESTAURANTS_SLUG, RESTAURANTS_VERSION );

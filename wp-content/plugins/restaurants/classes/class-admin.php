@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package 	Restaurants

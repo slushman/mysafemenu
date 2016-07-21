@@ -58,7 +58,7 @@ var jsPublicFile 				= 'restaurants-public'; // Compiled JS public file name
 
 // JS Admin
 var jsAdminSRC 					= './src/admin-js/*.js'; // Path to JS admin scripts folder.
-var jsAdminDestination 			= './jassets/js/'; // Path to place the compiled JS admin scripts file.
+var jsAdminDestination 			= './assets/js/'; // Path to place the compiled JS admin scripts file.
 var jsAdminFile 				= 'restaurants-admin'; // Compiled JS admin file name.
 // Default set to admin i.e. admin.js.
 

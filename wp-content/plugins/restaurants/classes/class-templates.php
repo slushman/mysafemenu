@@ -2,7 +2,7 @@
 /**
  * Template-related functions
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package		Restaurants
@@ -28,7 +28,7 @@ if ( ! function_exists( 'restaurants_templates' ) ) {
 /**
  * The public-facing functionality of the plugin.
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package 	Restaurants

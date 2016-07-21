@@ -3,7 +3,7 @@
 /**
  * Provides the markup for a section in the plugin settings
  *
- * @link 		https://www.slushman.com
+ * @link 		https://www.mysafemenu.com
  * @since 		1.0.0
  *
  * @package		Restaurants
