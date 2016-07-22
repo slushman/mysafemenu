@@ -27,15 +27,28 @@ class Restaurants_Posts {
 
 		if ( empty( $restID ) || ! is_int( $restID ) ) { return FALSE; }
 		if ( empty( $rest ) || ! is_object( $rest ) ) { return FALSE; }
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return FALSE; }
+		if ( wp_is_post_autosave( $restID ) ) { return FALSE; }
+		if ( wp_is_post_revision( $restID ) ) { return FALSE; }
+		if ( $this->does_post_already_exist( $rest ) ) { return FALSE; }
+
+		$status = get_post_status( $restID );
+
+		if ( 'publish' !== $status && 'future' !== $status ) { return FALSE; }
 
 		$content = '';
 
 		$post_args['post_date'] 	= $rest->post_date;
-		$post_args['post_content'] 	= 'The menu for ' . $rest->post_title . ' has been added to the menu list.';
-		$post_args['post_title'] 	= $rest->post_title . ' added to the menus!';
+		$post_args['post_content'] 	= 'The allergen menu for ' . $rest->post_title . ' has been added to the menu list.';
 
-		$postID = wp_insert_post( $post_args );
+		if ( ! empty( $rest->post_content ) ) {
+
+			$post_args['post_content'] .= '<p>' . $rest->post_content . '</p>';
+
+		}
+
+		$post_args['post_status'] 	= 'publish';
+		$post_args['post_title'] 	= $rest->post_title . ' added to the menus!';
+		$postID 					= wp_insert_post( $post_args );
 
 		return $postID;
 
@@ -55,11 +68,13 @@ class Restaurants_Posts {
 
 	} // get_posts()
 
-	private function check_for_post( $rest ) {
+	private function does_post_already_exist( $rest ) {
 
 		if ( empty( $rest ) ) { return; }
 
-		$posts = get_posts();
+		$posts = get_posts( array( 'numberposts' => -1 ) );
+
+		if ( $posts ) { return FALSE; }
 
 		foreach ( $posts as $post ) {
 
@@ -67,15 +82,15 @@ class Restaurants_Posts {
 
 			if ( FALSE !== $check ) {
 
-				return TRUE;
+				return TRUE; // post exists
 
 			}
 
 		}
 
-		return FALSE;
+		return FALSE; // post does not exist
 
-	} // check_for_post()
+	} // does_post_already_exist()
 
 	public function get_restaurants() {
 
@@ -89,15 +104,15 @@ class Restaurants_Posts {
 
 	public function loop_through_restaurants() {
 
-		$rests = get_restaurants();
+		$rests = $this->get_restaurants();
 
 		foreach ( $rests as $rest ) {
 
-			$check = $this->check_for_post( $rest );
+			$check = $this->does_post_already_exist( $rest );
 
-			if ( ! $check ) { continue; }
+			if ( $check ) { continue; }
 
-			$id = insert_post_for_new_restaurant( $rest );
+			$id = $this->insert_post_for_new_restaurant( $rest->ID, $rest );
 
 		}
 

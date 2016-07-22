@@ -168,7 +168,7 @@ class Restaurants {
 	 */
 	private function define_metabox_hooks() {
 
-		$metaboxes = array( 'Menufiles' );
+		$metaboxes = array( 'Menufile', 'Menufiles', 'RestaurantInfo' );
 
 		foreach ( $metaboxes as $box ) {
 
@@ -183,20 +183,14 @@ class Restaurants {
 
 		}
 
-		$plugin_metaboxes = new Restaurants_Metaboxes();
-
-		$this->loader->action( 'add_meta_boxes_restaurant', $plugin_metaboxes, 'add_metaboxes' );
-		$this->loader->action( 'save_post_restaurant', $plugin_metaboxes, 'validate_meta', 10, 2 );
-		//$this->loader->action( 'edit_form_after_title', $plugin_metaboxes, 'metabox_subtitle', 10, 2 );
-		$this->loader->action( 'add_meta_boxes_restaurant', $plugin_metaboxes, 'set_meta' );
-
 	} // define_metabox_hooks()
 
 	private function define_post_hooks() {
 
 		$plugin_posts = new Restaurants_Posts();
 
-		$this->loader->action( 'publish_post_restaurant', $plugin_posts,  'insert_post_for_new_restaurant', 10, 2 );
+		//$this->loader->action( 'save_post_restaurant', $plugin_posts,  'insert_post_for_new_restaurant', 10, 2 );
+		$this->loader->action( 'save_post_restaurant', $plugin_posts,  'loop_through_restaurants', 10, 2 );
 
 	} // define_post_hooks()
 

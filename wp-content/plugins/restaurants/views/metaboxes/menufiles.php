@@ -12,21 +12,18 @@
 
 wp_nonce_field( RESTAURANTS_SLUG, 'nonce_restaurants_menufiles' );
 
-$setatts 						= array();
 $setatts['id'] 					= 'menu-files';
 $setatts['labels']['add'] 		= __( 'Add Menu', 'restaurants' );
 $setatts['labels']['edit'] 		= __( 'Edit Menu', 'restaurants' );
 $setatts['labels']['header'] 	= __( 'Menu Name', 'restaurants' );
 $setatts['labels']['remove'] 	= __( 'Remove Menu', 'restaurants' );
 
-$field2 						= array();
 $field2['description'] 			= __( '', 'restaurants' );
 $field2['fieldtype'] 			= 'text';
 $field2['id'] 					= 'menu-name-field';
 $field2['label'] 				= __( 'Menu Name', 'restaurants' );
 $field2['name'] 				= 'menu-name-field';
 
-$field1 						= array();
 $field1['data']['title'] 		= '';
 $field1['fieldtype'] 			= 'text';
 $field1['id'] 					= 'menu-url-field';
@@ -58,5 +55,8 @@ if ( ! empty( $repeater ) ) {
 ?><p><?php
 
 include( plugin_dir_path( dirname( __FILE__ ) ) . 'fields/repeater.php' );
+unset( $setatts );
+unset( $field1 );
+unset( $field2 );
 
 ?></p>
