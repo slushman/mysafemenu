@@ -92,30 +92,30 @@ class Restaurants_Posts {
 
 	} // does_post_already_exist()
 
-	public function get_restaurants() {
+	// public function get_restaurants() {
+	//
+	// 	$shared 				= new Restaurants_Shared();
+	// 	$args['posts_per_page'] = -1;
+	// 	$rests 					= $shared->query( $args );
+	//
+	// 	return $rests;
+	//
+	// } // get_restaurants()
 
-		$shared 				= new Restaurants_Shared();
-		$args['posts_per_page'] = -1;
-		$rests 					= $shared->query( $args );
-
-		return $rests;
-
-	} // get_restaurants()
-
-	public function loop_through_restaurants() {
-
-		$rests = $this->get_restaurants();
-
-		foreach ( $rests as $rest ) {
-
-			$check = $this->does_post_already_exist( $rest );
-
-			if ( $check ) { continue; }
-
-			$id = $this->insert_post_for_new_restaurant( $rest->ID, $rest );
-
-		}
-
-	} // loop_through_restaurants()
+	// public function loop_through_restaurants() {
+	//
+	// 	$rests = $this->get_restaurants();
+	//
+	// 	foreach ( $rests as $rest ) {
+	//
+	// 		$check = $this->does_post_already_exist( $rest );
+	//
+	// 		if ( $check ) { continue; }
+	//
+	// 		$id = $this->insert_post_for_new_restaurant( $rest->ID, $rest );
+	//
+	// 	}
+	//
+	// } // loop_through_restaurants()
 
 } // class
