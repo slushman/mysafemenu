@@ -74,7 +74,7 @@ class Restaurants_Posts {
 
 		$posts = get_posts( array( 'numberposts' => -1 ) );
 
-		if ( $posts ) { return FALSE; }
+		if ( empty( $posts ) ) { return FALSE; }
 
 		foreach ( $posts as $post ) {
 
