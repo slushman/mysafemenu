@@ -120,7 +120,7 @@ class Restaurants_Public {
 
 		if ( is_array( $items ) || is_object( $items ) ) {
 
-			include restaurants_get_template( $args['loop-template'], 'loop' );
+			include restaurants_get_template( 'restaurants-loop', 'loop' );
 
 		} else {
 

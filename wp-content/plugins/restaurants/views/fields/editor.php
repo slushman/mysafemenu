@@ -9,12 +9,15 @@
  * @package    Restaurants
  * @subpackage Restaurants/classes/views
  */
- $defaults['description'] 	= '';
- $defaults['id'] 			= '';
- $defaults['settings'] 		= array();
- $defaults['value'] 			= '';
- $atts 						= wp_parse_args( $atts, $defaults );
+$defaults['description'] 	= '';
+$defaults['id'] 			= '';
+$defaults['label'] 			= '';
+$defaults['settings'] 		= array();
+$defaults['value'] 			= '';
+$atts 						= wp_parse_args( $atts, $defaults );
 
- wp_editor( $atts['value'], $atts['id'], $atts['settings'] );
+?><label for="<?php echo esc_attr( $atts['id'] ); ?>"><?php echo wp_kses( $atts['label'], array( 'code' => array() ) ); ?>: </label><?php
 
- ?><span class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></span>
+wp_editor( $atts['value'], $atts['id'], $atts['settings'] );
+
+?><span class="description"><?php echo wp_kses( $atts['description'], array( 'code' => array() ) ); ?></span>

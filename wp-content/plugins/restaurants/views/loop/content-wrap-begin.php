@@ -3,4 +3,4 @@
  * The view for the content wrap start used in the loop
  */
 
-?><li class="hentry">
+?><ul class="letter-list" id="<?php echo esc_attr( $char ); ?>">

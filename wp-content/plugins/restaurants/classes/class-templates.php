@@ -142,6 +142,50 @@ class Restaurants_Templates {
 	} // loop_content_meta_field()
 
 	/**
+	 * Sorts the items by their first letter.
+	 *
+	 * @hooked 		restaurants-before-loop-content 		9
+	 *
+	 * @param 		object 		$item 		Post object
+	 * @param 		array 		$meta 		The post metadata
+	 */
+	public function loop_content_sorting_begin( $item, $meta = array() ) {
+
+		$letter = substr( $item->post_title, 0, 1 );
+
+		if ( is_numeric( $letter ) ) {
+
+			$capped = 'Nums';
+
+		} elseif ( empty( $meta['menu-file'][0] ) /*&& empty( $meta['menu-files'] )*/ ) {
+
+			$capped = 'None';
+
+		} else {
+
+			$capped = strtoupper( $letter );
+
+		}
+
+		include restaurants_get_template( 'content-sorting', 'loop' );
+
+	} // loop_content_sorting_begin()
+
+	/**
+	 * Closes the sorted lists.
+	 *
+	 * @hooked 		restaurants-after-loop 		11
+	 *
+	 * @param 		object 		$item 		Post object
+	 * @param 		array 		$meta 		The post metadata
+	 */
+	public function loop_content_sorting_end( $item, $meta = array() ) {
+
+		?></ul><?php
+
+	} // loop_content_sorting_end()
+
+	/**
 	 * Includes the restaurants-subtitle template
 	 *
 	 * @hooked 		restaurants-loop-content 		30
@@ -177,11 +221,29 @@ class Restaurants_Templates {
 	 * @param 		object 		$item 		Post object
 	 * @param 		array 		$meta 		The post metadata
 	 */
-	public function loop_content_wrap_begin( $item, $meta = array() ) {
+	public function loop_content_wrap_begin( $meta, $title, $letter, $capped ) {
+
+		if ( ! empty( $char ) ) { return; }
 
 		include restaurants_get_template( 'content-wrap-begin', 'loop' );
 
 	} // loop_content_wrap_begin()
+
+	/**
+	 * Includes the content wrap start template file
+	 *
+	 * @hooked 		restaurants-before-loop-content 		10
+	 *
+	 * @param 		object 		$item 		Post object
+	 * @param 		array 		$meta 		The post metadata
+	 */
+	public function loop_content_wrap_begin_linked( $meta, $title, $letter, $capped ) {
+
+		if ( empty( $char ) )  { return; }
+
+		include restaurants_get_template( 'content-wrap-begin-linked', 'loop' );
+
+	} // loop_content_wrap_begin_linked()
 
 	/**
 	 * Includes the content wrap end template file
@@ -196,12 +258,25 @@ class Restaurants_Templates {
 	} // loop_content_wrap_end()
 
 	/**
+	 * Includes the search or sort template file
+	 *
+	 * @hooked 		restaurants-before-loop 		15
+	 * @param 		array 		$args 		The shortcode attributes
+	 */
+	public function loop_search_or_sort( $args ) {
+
+		include restaurants_get_template( 'search-or-sort', 'loop' );
+
+	} // loop_search_or_sort()
+
+	/**
 	 * Includes the list wrap start template file and sets the value of $class.
 	 *
 	 * If the taxonomyname shortcode attribute is used, it sets $class as the
 	 * taxonomyname or taxonomynames. Otherwise, $class is blank.
 	 *
-	 * @param 		array 		$args 		The shortcode attributes
+	 * @hooked 		restaurants-before-loop 		15
+	 * @param 		array 			$args 			The shortcode attributes
 	 */
 	public function loop_wrap_begin( $args ) {
 

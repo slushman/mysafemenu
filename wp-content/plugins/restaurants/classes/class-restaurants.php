@@ -176,10 +176,10 @@ class Restaurants {
 
 			$box = new $class();
 
-			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'add_metaboxes' );
+			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'add_metaboxes', 10, 1 );
 			$this->loader->action( 'save_post_restaurant', 			$box, 'validate_meta', 10, 2 );
 			$this->loader->action( 'edit_form_after_title', 		$box, 'promote_metaboxes', 10, 1 );
-			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'set_meta' );
+			$this->loader->action( 'add_meta_boxes_restaurant', 	$box, 'set_meta', 10, 1 );
 
 		}
 
@@ -235,9 +235,11 @@ class Restaurants {
 
 		// Loop
 		$this->loader->action( 'restaurants-before-loop', 			$plugin_templates, 'loop_wrap_begin', 10, 1 );
+		$this->loader->action( 'restaurants-before-loop', 			$plugin_templates, 'loop_search_or_sort', 15, 1 );
 
-		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_wrap_begin', 10, 2 );
-		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_link_begin', 15, 2 );
+		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_sorting_begin', 9, 4 );
+		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_wrap_begin', 10, 4 );
+		//$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_link_begin', 15, 4 );
 
 		$this->loader->action( 'restaurants-loop-content', 			$plugin_templates, 'loop_content_title', 15, 2 );
 
@@ -245,6 +247,7 @@ class Restaurants {
 		$this->loader->action( 'restaurants-after-loop-content', 	$plugin_templates, 'loop_content_wrap_end', 90, 2 );
 
 		$this->loader->action( 'restaurants-after-loop', 			$plugin_templates, 'loop_wrap_end', 10, 1 );
+		$this->loader->action( 'restaurants-after-loop', 			$plugin_templates, 'loop_content_sorting_end', 11, 2 );
 
 		// Single
 		$this->loader->action( 'restaurants-single-content', 		$plugin_templates, 'single_restaurant_thumbnail', 10 );

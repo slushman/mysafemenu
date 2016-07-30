@@ -21,7 +21,7 @@ class Restaurants_Metabox_RestaurantInfo extends Restaurants_Metabox {
 		$this->post_type 	= 'restaurant';
 
 		$this->fields[] 	= array( 'restaurant-url', 'url', '' );
-		$this->fields[] 	= array( 'menu-instructions', 'textarea', '' );
+		$this->fields[] 	= array( 'menu-instructions', 'editor', '' );
 
 		$this->nonces[] 	= 'nonce_restaurants_restaurantinfo';
 
@@ -30,10 +30,11 @@ class Restaurants_Metabox_RestaurantInfo extends Restaurants_Metabox {
 	/**
 	 * Registers metaboxes with WordPress
 	 *
-	 * @since 	1.0.0
-	 * @access 	public
+	 * @since 		1.0.0
+	 * @access 		public
+	 * @param 		object 			$post 			The post object.
 	 */
-	public function add_metaboxes() {
+	public function add_metaboxes( $post ) {
 
 		add_meta_box(
 			'restaurants_restaurantinfo',

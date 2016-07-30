@@ -15,48 +15,122 @@
 /**
  * restaurants-before-loop hook
  *
- * @hooked 		loop_wrap_start 		15
+ * @hooked 		loop_wrap_begin 		10
+ * @hooked 		search_or_sort 			15
  */
 do_action( 'restaurants-before-loop', $args );
 
-foreach ( $items as $item ) {
+while ( $items->have_posts() ) : $items->the_post();
 
-	$meta = get_post_custom( $item->ID );
+	$meta 		= get_post_custom( get_the_ID() );
+	$title 		= get_the_title();
+	$thecheck 	= substr( $title, 0, 3 );
+	$link 		= $meta['menu-file'][0];
 
-	/**
-	 * restaurants-before-loop-content hook
-	 *
-	 * @param 		object  	$item 		The post object
-	 *
-	 * @hooked 		loop_content_wrap_begin 		10
-	 * @hooked 		loop_content_link_begin 		15
-	 */
-	do_action( 'restaurants-before-loop-content', $item, $meta );
+	if ( 'The' === $thecheck ) {
 
-		/**
-		 * lazy-load-videos-loop-content hook
-		 *
-		 * @param 		object  	$item 		The post object
-		 *
-		 * @hooked		loop_content_image 			10
-		 * @hooked		loop_content_title 			15
-		 * @hooked		loop_content_subtitle 		20
-		 */
-		do_action( 'restaurants-loop-content', $item, $meta );
+		$letter = substr( $title, 4, 1 );
 
-	/**
-	 * restaurants-after-loop-content hook
-	 *
-	 * @param 		object  	$item 		The post object
-	 *
-	 * @hooked 		loop_content_link_end 		10
-	 * @hooked 		loop_content_wrap_end 		90
-	 */
-	do_action( 'restaurants-after-loop-content', $item, $meta );
+	} else {
 
+		$letter = substr( $title, 0, 1 );
+
+	}
+
+	if ( is_numeric( $letter ) ) {
+
+		$capped = 'Nums';
+
+	} else {
+
+		$capped = strtoupper( $letter );
+
+	}
+
+	if ( empty( $char ) ) :
+
+		$char = $capped;
+
+		?><ul class="letter-list" id="<?php echo esc_attr( $char ); ?>"><?php
+
+	elseif ( $capped != $char ) :
+
+		$char = $capped;
+
+		?><a class="link-top" href="#"><?php esc_html_e( 'Back to top', 'restaurants' ); ?></a>
+		</ul><ul class="letter-list" id="<?php echo esc_attr( $char ); ?>"><?php
+
+	endif;
+
+	if ( empty( $link ) && empty( $meta['menu-files'] ) ) :
+
+		?><li class="restaurant" data-menu="none"><?php
+
+	else :
+
+		?><li class="restaurant"><?php
+
+	endif;
+
+	if ( empty( $link ) ) {
+
+		?><h3 class="restaurants-title"><?php
+
+			echo esc_html( $title );
+
+		?></h3><?php
+
+	} else {
+
+		?><a class="restaurant-list-link" href="<?php echo esc_url( $link ); ?>">
+			<h3 class="restaurants-title"><?php
+
+				echo esc_html( $title );
+
+			?></h3>
+		</a><?php
+
+	}
+
+	?></li><?php
+
+	unset( $capped );
+	unset( $letter );
 	unset( $meta );
+	unset( $title );
 
-} // foreach
+endwhile;
+
+// 	/**
+// 	 * restaurants-before-loop-content hook
+// 	 *
+// 	 * @param 		object  	$item 		The post object
+// 	 *
+// 	 * @hooked 		loop_content_wrap_begin 		10
+// 	 * @hooked 		loop_content_link_begin 		15
+// 	 */
+// 	do_action( 'restaurants-before-loop-content', $item, $meta );
+//
+// 		/**
+// 		 * lazy-load-videos-loop-content hook
+// 		 *
+// 		 * @param 		object  	$item 		The post object
+// 		 *
+// 		 * @hooked		loop_content_image 			10
+// 		 * @hooked		loop_content_title 			15
+// 		 * @hooked		loop_content_subtitle 		20
+// 		 */
+// 		do_action( 'restaurants-loop-content', $item, $meta );
+//
+// 	/**
+// 	 * restaurants-after-loop-content hook
+// 	 *
+// 	 * @param 		object  	$item 		The post object
+// 	 *
+// 	 * @hooked 		loop_content_link_end 		10
+// 	 * @hooked 		loop_content_wrap_end 		90
+// 	 */
+// 	do_action( 'restaurants-after-loop-content', $item, $meta );
 
 /**
  * restaurants-after-loop hook

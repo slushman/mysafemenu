@@ -90,7 +90,7 @@ class Restaurants_Shared {
 
 				wp_cache_set( $cache_name, $query, RESTAURANTS_SLUG . '_posts', 5 * MINUTE_IN_SECONDS );
 
-				$return = $query->posts;
+				$return = $query;
 
 			}
 

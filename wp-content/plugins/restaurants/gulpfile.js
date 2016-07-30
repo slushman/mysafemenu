@@ -28,13 +28,13 @@
  * Project Configuration for gulp tasks.
  */
 // Project related.
-var project 					= 'text-domain'; // Project Name.
-var projectURL 					= 'project.dev'; // Project URL. Could be something like localhost:8888.
+var project 					= 'restaurants'; // Project Name.
+var projectURL 					= 'menus.dev'; // Project URL. Could be something like localhost:8888.
 var productURL 					= './'; // Theme/Plugin URL. Leave as is.
 
 // Translation related.
-var text_domain 				= 'text-domain';
-var destFile 					= 'text-domain.pot';
+var text_domain 				= 'restaurants';
+var destFile 					= 'restaurants.pot';
 var package 					= 'Restaurants';
 var bugReport 					= 'http://www.dccmarketing.com/contact';
 var lastTranslator 				= 'Chris Wilcoxson <chrisw@dccmarketing.com>';
@@ -69,8 +69,8 @@ var imagesDestination 			= './assets/images/'; // Images destination folder. Mus
 // Watch files paths.
 var styleWatchFiles 			= './src/scss/**/*.scss'; // Path to all *.scss files.
 var vendorJSWatchFiles 			= './src/js/*.js'; // Path to all vendor JS files.
-var publicJSWatchFiles 			= './src/js/public/*.js'; // Path to all public JS files.
-var adminJSWatchFiles 			= './src/js/admin/*.js'; // Path to all admin JS files.
+var publicJSWatchFiles 			= './src/public-js/*.js'; // Path to all public JS files.
+var adminJSWatchFiles 			= './src/admin-js/*.js'; // Path to all admin JS files.
 var projectPHPWatchFiles 		= './*.php'; // Path to all PHP files.
 
 var zipFiles 					= [ './**',
@@ -270,11 +270,11 @@ gulp.task( 'translate', function () {
  		.pipe( plugins.notify( { message: 'TASK: "translate" Completed! 💯', onLast: true } ) );
 });
 
-gulp.task( 'zipIt', function() {
-	return gulp.src( zipFiles )
-		.pipe( plugins.zip( project + '.zip' ) )
-		.pipe( gulp.dest( './' ) );
-});
+// gulp.task( 'zipIt', function() {
+// 	return gulp.src( zipFiles )
+// 		.pipe( plugins.zip( project + '.zip' ) )
+// 		.pipe( gulp.dest( './' ) );
+// });
 
 /**
  * Watches for file changes and runs specific tasks.

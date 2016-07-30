@@ -38,7 +38,7 @@ unset( $atts );
 $atts['description'] 	= __( 'What if there is not a published allergen menu. "Ask at restaurant.", "No menu available.", etc', 'restaurants' );
 $atts['id'] 			= 'menu-instructions';
 $atts['label'] 			= __( 'Menu Instructions', 'restaurants' );
-$atts['name'] 			= 'menu-instructions';
+$atts['settings'] 		= array();
 
 if ( ! empty( $this->meta[$atts['id']][0] ) ) {
 
@@ -50,7 +50,7 @@ $atts = apply_filters( RESTAURANTS_SLUG . '-field-' . $atts['id'], $atts );
 
 ?><p><?php
 
-include( plugin_dir_path( dirname( __FILE__ ) ) . 'fields/textarea.php' );
+include( plugin_dir_path( dirname( __FILE__ ) ) . 'fields/editor.php' );
 unset( $atts );
 
 ?></p><?php

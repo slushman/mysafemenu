@@ -88,8 +88,9 @@ class Restaurants_Metabox {
 	 * @hooked 		add_meta_boxes
 	 * @since 		1.0.0
 	 * @access 		public
+	 * @param 		object 			$post 			The post object.
 	 */
-	public function add_metaboxes() {
+	public function add_metaboxes( $post ) {
 
 		// Define in child class.
 
@@ -105,17 +106,14 @@ class Restaurants_Metabox {
 	 */
 	private function check_nonces( $posted ) {
 
-		$nonce_check 	= 0;
-		$nonces 		= $this->nonces;
+		foreach ( $this->nonces as $nonce ) {
 
-		foreach ( $nonces as $nonce ) {
-
-			if ( ! isset( $posted[$nonce] ) ) { $nonce_check++; }
-			if ( isset( $posted[$nonce] ) && ! wp_verify_nonce( $posted[$nonce], $this->theme_name ) ) { $nonce_check++; }
+			if ( ! isset( $posted[$nonce] ) ) { return FALSE; }
+			if ( isset( $posted[$nonce] ) && ! wp_verify_nonce( $posted[$nonce], $this->theme_name ) ) { return FALSE; }
 
 		}
 
-		return $nonce_check;
+		return TRUE;
 
 	} // check_nonces()
 
@@ -171,12 +169,18 @@ class Restaurants_Metabox {
 	 * @param 		object 		$posted 		The submitted data.
 	 * @param 		int 		$post_id 		The post ID.
 	 * @param 		object 		$post 			The post object.
-	 * @return 		bool 						FALSE if any conditions are met, otherwise TRUE.
+	 * @return 		int 						0 if any conditions are met, otherwise 1.
 	 */
 	private function pre_validation_checks( $posted, $post_id, $post ) {
 
-		if ( wp_is_post_autosave( $post_id ) ) { return FALSE; }
-		if ( wp_is_post_revision( $post_id ) ) { return FALSE; }
+		//wp_die( '<pre>autosave: ' . print_r( wp_is_post_autosave( $post_id ) ) . '</pre>' );
+		//wp_die( '<pre>revision: ' . print_r( wp_is_post_revision( $post_id ) ) . '</pre>' );
+		//wp_die( '<pre>caps: ' . print_r( current_user_can( $this->caps, $post_id ) ) . '</pre>' );
+		//wp_die( '<pre>post type: ' . print_r( $this->check_post_type( $post->post_type ) ) . '</pre>' );
+		//wp_die( '<pre>nonces: ' . print_r( $this->check_nonces( $posted ) ) . '</pre>' );
+
+		if ( FALSE !== wp_is_post_autosave( $post_id ) ) { return FALSE; }
+		if ( FALSE !== wp_is_post_revision( $post_id ) ) { return FALSE; }
 		if ( ! current_user_can( $this->caps, $post_id ) ) { return FALSE; }
 		if ( ! $this->check_post_type( $post->post_type ) ) { return FALSE; }
 
@@ -213,10 +217,9 @@ class Restaurants_Metabox {
 	 * @exits 		Post is empty.
 	 * @exits 		Not on the correct post type.
 	 * @hooked 		add_meta_boxes
+	 * @param 		object 			$post 			The post object.
 	 */
-	public function set_meta() {
-
-		global $post;
+	public function set_meta( $post ) {
 
 		if ( empty( $post ) ) { return; }
 		if ( ! $this->check_post_type( $post->post_type ) ) { return FALSE; }

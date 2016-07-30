@@ -31,10 +31,11 @@ class Restaurants_Metabox_Menufiles extends Restaurants_Metabox {
 	/**
 	 * Registers metaboxes with WordPress
 	 *
-	 * @since 	1.0.0
-	 * @access 	public
+	 * @since 		1.0.0
+	 * @access 		public
+	 * @param 		object 			$post 			The post object.
 	 */
-	public function add_metaboxes() {
+	public function add_metaboxes( $post ) {
 
 		add_meta_box(
 			'restaurants_menufiles',
