@@ -6,23 +6,25 @@
 	<p><button class="toggle-search-sort" aria-controls="search-or-sort" aria-expanded="false"><?php
 		esc_html_e( 'Search or Sort', 'restaurant' );
 	?></button></p>
-	<p><?php
+	<div class="search-sort-options"><?php
 
-	get_search_form();
+		get_search_form();
 
-	?></p>
-	<ul class="letter-sort-menu">
-		<li id="viewall">View All</li>
-		<li id="Nums">0 - 9</li><?php
+		?><ul class="letter-sort-menu">
+			<li id="Nums">0 - 9</li><?php
 
-		foreach ( range( 'A', 'Z' ) as $char ) :
+			foreach ( range( 'A', 'Z' ) as $char ) :
 
-			?><li id="<?php echo esc_attr( $char ); ?>"><?php echo $char; ?></li><?php
+				?><li id="<?php echo esc_attr( $char ); ?>"><?php echo $char; ?></li><?php
 
-		endforeach;
+			endforeach;
 
-		unset( $char );
+			unset( $char );
 
-	?></ul>
-	<p class="toggle-none" data-status=""><?php esc_html_e( 'Hide restaurants with no allergen menu.', 'restaurants' ); ?></p>
+		?></ul>
+		<ul class="other-sort-menu">
+			<li id="viewall">View All</li>
+			<li id="toggle-none" class="toggle-none" data-status=""><?php esc_html_e( 'Hide restaurants with no allergen menu.', 'restaurants' ); ?></li>
+		</ul>
+	</div>
 </div>

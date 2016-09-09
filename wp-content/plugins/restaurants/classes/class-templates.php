@@ -221,9 +221,7 @@ class Restaurants_Templates {
 	 * @param 		object 		$item 		Post object
 	 * @param 		array 		$meta 		The post metadata
 	 */
-	public function loop_content_wrap_begin( $meta, $title, $letter, $capped ) {
-
-		if ( ! empty( $char ) ) { return; }
+	public function loop_content_wrap_begin( $meta, $title ) {
 
 		include restaurants_get_template( 'content-wrap-begin', 'loop' );
 
@@ -237,9 +235,7 @@ class Restaurants_Templates {
 	 * @param 		object 		$item 		Post object
 	 * @param 		array 		$meta 		The post metadata
 	 */
-	public function loop_content_wrap_begin_linked( $meta, $title, $letter, $capped ) {
-
-		if ( empty( $char ) )  { return; }
+	public function loop_content_wrap_begin_linked( $meta, $title ) {
 
 		include restaurants_get_template( 'content-wrap-begin-linked', 'loop' );
 

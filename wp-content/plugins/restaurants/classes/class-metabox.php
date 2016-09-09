@@ -173,12 +173,6 @@ class Restaurants_Metabox {
 	 */
 	private function pre_validation_checks( $posted, $post_id, $post ) {
 
-		//wp_die( '<pre>autosave: ' . print_r( wp_is_post_autosave( $post_id ) ) . '</pre>' );
-		//wp_die( '<pre>revision: ' . print_r( wp_is_post_revision( $post_id ) ) . '</pre>' );
-		//wp_die( '<pre>caps: ' . print_r( current_user_can( $this->caps, $post_id ) ) . '</pre>' );
-		//wp_die( '<pre>post type: ' . print_r( $this->check_post_type( $post->post_type ) ) . '</pre>' );
-		//wp_die( '<pre>nonces: ' . print_r( $this->check_nonces( $posted ) ) . '</pre>' );
-
 		if ( FALSE !== wp_is_post_autosave( $post_id ) ) { return FALSE; }
 		if ( FALSE !== wp_is_post_revision( $post_id ) ) { return FALSE; }
 		if ( ! current_user_can( $this->caps, $post_id ) ) { return FALSE; }

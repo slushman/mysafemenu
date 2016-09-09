@@ -209,6 +209,8 @@ class Restaurants {
 		$this->loader->action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->filter( 'single_template', $plugin_public, 'single_cpt_template', 11 );
 		$this->loader->shortcode( 'listrestaurants', $plugin_public, 'shortcode_listrestaurants' );
+		$this->loader->filter( 'posts_fields', $plugin_public, 'create_temp_column', 10, 2 );
+		$this->loader->filter( 'posts_orderby', $plugin_public, 'sort_by_temp_column', 10, 2 );
 
 		/**
 		 * Action instead of template tag.
@@ -237,9 +239,9 @@ class Restaurants {
 		$this->loader->action( 'restaurants-before-loop', 			$plugin_templates, 'loop_wrap_begin', 10, 1 );
 		$this->loader->action( 'restaurants-before-loop', 			$plugin_templates, 'loop_search_or_sort', 15, 1 );
 
-		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_sorting_begin', 9, 4 );
-		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_wrap_begin', 10, 4 );
-		//$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_link_begin', 15, 4 );
+		//$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_sorting_begin', 9, 4 );
+		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_wrap_begin', 10, 2 );
+		$this->loader->action( 'restaurants-before-loop-content', 	$plugin_templates, 'loop_content_link_begin', 15, 2 );
 
 		$this->loader->action( 'restaurants-loop-content', 			$plugin_templates, 'loop_content_title', 15, 2 );
 

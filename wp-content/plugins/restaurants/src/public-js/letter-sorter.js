@@ -5,7 +5,7 @@
 
 	'use strict';
 
-	var sortMenu, letterLists, noneList, listsLen;
+	var sortMenu, letterLists, listsLen;
 
 	sortMenu = document.querySelector( '.letter-sort-menu' );
 	if ( ! sortMenu ) { return; }
@@ -20,36 +20,18 @@
 
 		var selected = e.target.getAttribute( 'id' );
 
-		if ( 'viewall' === selected  ) {
+		for ( var i = 0; i < listsLen; i++ ) {
 
-			for ( var i = 0; i < listsLen; i++ ) {
+			var checkid = letterLists[i].getAttribute( 'id' );
+
+			if ( checkid === selected ) {
 
 				letterLists[i].removeAttribute( 'style' );
+				continue;
 
 			}
 
-			for ( var j = 0; j < noneList.length; j++ ) {
-
-				noneList[j].removeAttribute( 'style' );
-
-			}
-
-		} else {
-
-			for ( var i = 0; i < listsLen; i++ ) {
-
-				var checkid = letterLists[i].getAttribute( 'id' );
-
-				if ( checkid === selected ) {
-
-					letterLists[i].removeAttribute( 'style' );
-					continue;
-
-				}
-
-				letterLists[i].style.display = 'none';
-
-			}
+			letterLists[i].style.display = 'none';
 
 		}
 

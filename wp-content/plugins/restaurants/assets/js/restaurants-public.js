@@ -5,7 +5,7 @@
 
 	'use strict';
 
-	var sortMenu, letterLists, noneList, listsLen;
+	var sortMenu, letterLists, listsLen;
 
 	sortMenu = document.querySelector( '.letter-sort-menu' );
 	if ( ! sortMenu ) { return; }
@@ -17,6 +17,49 @@
 	if ( 0 >= listsLen ) { return; }
 
 	sortMenu.addEventListener( 'click', function( e ){
+
+		var selected = e.target.getAttribute( 'id' );
+
+		for ( var i = 0; i < listsLen; i++ ) {
+
+			var checkid = letterLists[i].getAttribute( 'id' );
+
+			if ( checkid === selected ) {
+
+				letterLists[i].removeAttribute( 'style' );
+				continue;
+
+			}
+
+			letterLists[i].style.display = 'none';
+
+		}
+
+	});
+
+})();
+
+/**
+ * Enables file uploader field interaction with Media Library.
+ */
+(function() {
+
+	'use strict';
+
+	var otherMenu, letterLists, listsLen, noneList;
+
+	otherMenu = document.querySelector( '.other-sort-menu' );
+	if ( ! otherMenu ) { return; }
+
+	letterLists = document.querySelectorAll( '.letter-list' );
+	if ( ! letterLists ) { return; }
+
+	listsLen = letterLists.length;
+	if ( 0 >= listsLen ) { return; }
+
+	noneList = document.querySelectorAll( '[data-menu="none"]' );
+
+	otherMenu.addEventListener( 'click', function( e ){
 
 		var selected = e.target.getAttribute( 'id' );
 
@@ -34,20 +77,31 @@
 
 			}
 
-		} else {
+		}
 
-			for ( var i = 0; i < listsLen; i++ ) {
+		if ( 'toggle-none' === selected ) {
 
-				var checkid = letterLists[i].getAttribute( 'id' );
+			var status = e.target.getAttribute( 'data-status' );
 
-				if ( checkid === selected ) {
+			if ( ! status ) {
 
-					letterLists[i].removeAttribute( 'style' );
-					continue;
+				for ( var j = 0; j < noneList.length; j++ ) {
+
+					noneList[j].style.display = 'none';
 
 				}
 
-				letterLists[i].style.display = 'none';
+				e.target.setAttribute( 'data-status', 'toggled' );
+
+			} else {
+
+				for ( var j = 0; j < noneList.length; j++ ) {
+
+					noneList[j].removeAttribute( 'style' );
+
+				}
+
+				e.target.removeAttribute( 'data-status' );
 
 			}
 
@@ -57,44 +111,81 @@
 
 })();
 
+
 /**
  * Toggles the visibility of the restaurants with no menu.
+ */
+// (function() {
+//
+// 	'use strict';
+//
+// 	var button, noneList;
+//
+// 	button = document.querySelector( '.toggle-none' );
+// 	noneList = document.querySelectorAll( '[data-menu="none"]' );
+//
+// 	button.addEventListener( 'click', function() {
+//
+// 		var status = this.getAttribute( 'data-status' );
+//
+// 		if ( ! status ) {
+//
+// 			for ( var j = 0; j < noneList.length; j++ ) {
+//
+// 				noneList[j].style.display = 'none';
+//
+// 			}
+//
+// 			this.setAttribute( 'data-status', 'toggled' );
+//
+// 		} else {
+//
+// 			for ( var j = 0; j < noneList.length; j++ ) {
+//
+// 				noneList[j].removeAttribute( 'style' );
+//
+// 			}
+//
+// 			this.removeAttribute( 'data-status' );
+//
+// 		}
+//
+// 	});
+//
+// })();
+
+/**
+ * Toggles the visibility of the search and sort options.
  */
 (function() {
 
 	'use strict';
 
-	var button, noneList;
+	var button, options;
 
-	button = document.querySelector( '.toggle-none' );
-	noneList = document.querySelectorAll( '[data-menu="none"]' );
+	button = document.querySelector( '.toggle-search-sort' );
+	options = document.querySelector( '.search-sort-options' );
 
-	button.addEventListener( 'click', function() {
+	options.setAttribute( 'aria-hidden', 'true' );
 
-		var status = this.getAttribute( 'data-status' );
+	function toggleOptions( e ) {
 
-		if ( ! status ) {
+		e.preventDefault();
 
-			for ( var j = 0; j < noneList.length; j++ ) {
+		options.classList.toggle( 'open' );
 
-				noneList[j].style.display = 'none';
+		if ( options.classList.contains( 'open' ) ) {
 
-			}
-
-			this.setAttribute( 'data-status', 'toggled' );
+			options.setAttribute( 'aria-hidden', 'false' );
 
 		} else {
 
-			for ( var j = 0; j < noneList.length; j++ ) {
-
-				noneList[j].removeAttribute( 'style' );
-
-			}
-
-			this.removeAttribute( 'data-status' );
+			options.setAttribute( 'aria-hidden', 'true' );
 
 		}
 
-	});
+	}
+
+	button.addEventListener( 'click', toggleOptions );
 
 })();

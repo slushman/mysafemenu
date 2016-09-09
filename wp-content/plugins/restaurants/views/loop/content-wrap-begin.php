@@ -3,4 +3,12 @@
  * The view for the content wrap start used in the loop
  */
 
-?><ul class="letter-list" id="<?php echo esc_attr( $char ); ?>">
+?><li class="restaurant"<?php
+
+if ( empty( $meta['menu-file'][0] ) || empty( $meta['menu-files'] ) ) :
+
+	?> data-menu="none"<?php
+
+endif;
+
+?>>

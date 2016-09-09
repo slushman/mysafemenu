@@ -36,9 +36,19 @@ class Restaurants_Posts {
 		if ( 'publish' !== $status && 'future' !== $status ) { return FALSE; }
 
 		$content = '';
+		$meta = get_post_custom( $restID );
 
-		$post_args['post_date'] 	= $rest->post_date;
-		$post_args['post_content'] 	= 'The allergen menu for ' . $rest->post_title . ' has been added to the menu list.';
+		$post_args['post_date'] = $rest->post_date;
+
+		if ( empty( $meta['menu-file'][0] ) ) {
+
+			$post_args['post_content'] = $rest->post_title . ' has been added to the menu list, but there is no menu available online.';
+
+		} else {
+
+			$post_args['post_content'] = 'The allergen menu for ' . $rest->post_title . ' has been added to the menu list.';
+
+		}
 
 		if ( ! empty( $rest->post_content ) ) {
 

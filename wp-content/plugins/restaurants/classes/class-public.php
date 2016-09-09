@@ -53,6 +53,35 @@ class Restaurants_Public {
 	} // __construct()
 
 	/**
+	 * Creates a new column to sort SQL queries by.
+	 *
+	 * @param 		string 		$fields 		The current fields statement.
+	 * @return 		string 						The modified fields statement.
+	 */
+	public function create_temp_column( $fields, $query ) {
+
+		if ( 'restaurant' !== $query->query['post_type'] ) { return $fields; }
+
+		global $wpdb;
+
+		$matches = 'The';
+		$has_the = " CASE
+			WHEN $wpdb->posts.post_title regexp( '^($matches)[[:space:]]' )
+				THEN trim(substr($wpdb->posts.post_title from 4))
+			ELSE $wpdb->posts.post_title
+				END AS title2";
+
+		if ( $has_the ) {
+
+			$fields .= ( preg_match( '/^(\s+)?,/', $has_the ) ) ? $has_the : ", $has_the";
+
+		}
+
+		return $fields;
+
+	} // create_temp_column()
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
@@ -98,6 +127,28 @@ class Restaurants_Public {
 	} // set_options()
 
 	/**
+	 * Sorts the orderby parameter for WP_Query by the temp column.
+	 *
+	 * @param 		string 		$orderby 		The current orderby statement.
+	 * @return 		string 						The modified orderby statement.
+	 */
+	public function sort_by_temp_column( $orderby, $query ) {
+
+		if ( 'restaurant' !== $query->query['post_type'] ) { return $orderby; }
+
+		$custom_orderby = " UPPER(title2) ASC";
+
+		if ( $custom_orderby ) {
+
+			$orderby = $custom_orderby;
+
+		}
+
+		return $orderby;
+
+	} // sort_by_temp_column()
+
+	/**
 	 * Processes shortcode listrestaurants
 	 *
 	 * @param 	array 	$atts 		Shortcode attributes
@@ -117,6 +168,7 @@ class Restaurants_Public {
 		$args						= shortcode_atts( $defaults, $atts, 'listrestaurants' );
 		$shared 					= new Restaurants_Shared( RESTAURANTS_SLUG, RESTAURANTS_VERSION );
 		$items 						= $shared->query( $args );
+		$items 						= apply_filters( 'after_get_restaurants', $items );
 
 		if ( is_array( $items ) || is_object( $items ) ) {
 

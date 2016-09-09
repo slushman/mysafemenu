@@ -27,16 +27,6 @@ while ( $items->have_posts() ) : $items->the_post();
 	$thecheck 	= substr( $title, 0, 3 );
 	$link 		= $meta['menu-file'][0];
 
-	if ( 'The' === $thecheck ) {
-
-		$letter = substr( $title, 4, 1 );
-
-	} else {
-
-		$letter = substr( $title, 0, 1 );
-
-	}
-
 	if ( is_numeric( $letter ) ) {
 
 		$capped = 'Nums';
@@ -62,37 +52,28 @@ while ( $items->have_posts() ) : $items->the_post();
 
 	endif;
 
-	if ( empty( $link ) && empty( $meta['menu-files'] ) ) :
+	/**
+	 * restaurants-before-loop-content action hook
+	 *
+	 * @hooked 		loop_content_link_begin 		15
+	 */
+	do_action( 'restaurants-before-loop-content', $item, $meta );
 
-		?><li class="restaurant" data-menu="none"><?php
+	/**
+	 * restaurants-loop-content action hook
+	 *
+	 * @hooked 		loop_content_title 		15
+	 */
+	do_action( 'restaurants-loop-content', $item, $meta );
 
-	else :
+	/**
+	 * restaurants-after-loop-content action hook
+	 *
+	 * @hooked 		loop_content_link_end 		10
+	 */
+	do_action( 'restaurants-after-loop-content', $item, $meta );
 
-		?><li class="restaurant"><?php
-
-	endif;
-
-	if ( empty( $link ) ) {
-
-		?><h3 class="restaurants-title"><?php
-
-			echo esc_html( $title );
-
-		?></h3><?php
-
-	} else {
-
-		?><a class="restaurant-list-link" href="<?php echo esc_url( $link ); ?>">
-			<h3 class="restaurants-title"><?php
-
-				echo esc_html( $title );
-
-			?></h3>
-		</a><?php
-
-	}
-
-	?></li><?php
+	?></ul><?php
 
 	unset( $capped );
 	unset( $letter );
