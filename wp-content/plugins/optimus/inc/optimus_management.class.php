@@ -66,21 +66,42 @@ class Optimus_Management
 	* Bulk optimizer page
 	*
 	* @since   1.3.8
-	* @change  1.3.8
+	* @change  1.4.8
 	*
 	*/
 
 	public static function bulk_optimizer_page() {
 		global $wpdb;
 
-        if (!empty($_GET['ids'])) {
-            $ids = implode(',', array_map('intval', explode('-', $_GET['ids'])));
-            $condition = "AND ID IN($ids)";
+        /* Get plugin options */
+		$options = Optimus::get_options();
+
+        /* Check if images are already optimized */
+        if ( $options['webp_convert'] ) {
+            $optimus_query = '%optimus%webp";i:1%';
         } else {
-            $condition = "";
+            $optimus_query = '%optimus%';
         }
 
-        $query = "SELECT ID, post_title, post_mime_type FROM $wpdb->posts WHERE post_type = 'attachment' AND post_mime_type LIKE 'image/%' $condition ORDER BY ID DESC";
+        /* Check if specific IDs are selected */
+        if (!empty($_GET['ids'])) {
+            $ids = implode(',', array_map('intval', explode('-', $_GET['ids'])));
+            $id_query = "AND ID IN($ids)";
+        } else {
+            $id_query = "";
+        }
+
+        /* Image query */
+        $query = "SELECT $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_mime_type
+            FROM $wpdb->posts, $wpdb->postmeta
+            WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id
+                AND $wpdb->posts.post_type = 'attachment'
+                AND $wpdb->posts.post_mime_type LIKE 'image/%'
+                AND $wpdb->postmeta.meta_key = '_wp_attachment_metadata'
+                AND $wpdb->postmeta.meta_value NOT LIKE '$optimus_query'
+                $id_query
+            ORDER BY $wpdb->posts.ID DESC";
+
         $assets = $wpdb->get_results($query, ARRAY_A);
         $count = count($assets);
 
@@ -93,7 +114,7 @@ class Optimus_Management
                 echo '<p>' . __("It is recommended to run the bulk image optimization with an Optimus HQ activated version due to the size limitation of the free version.", "optimus") . '</p>';
 			}
 
-            echo '<p><em>' . sprintf(__("Optimus found <strong>%d images</strong> in your WordPress media library.", "optimus"), $count) . '</em></p>';
+            echo '<p><em>' . sprintf(__("Optimus found <strong>%d images</strong> in your WordPress media library that can be optimized.", "optimus"), $count) . '</em></p>';
 			echo '<form method="POST" action="?page=optimus-bulk-optimizer">';
 			echo '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce('optimus-bulk-optimizer') . '">';
 			echo '<input type="hidden" name="optimus-bulk-optimizer" value="1">';
